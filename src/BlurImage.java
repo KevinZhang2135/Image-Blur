@@ -9,7 +9,7 @@ public class BlurImage {
     public static void main(String[] args) throws Exception {
         // System.out.println(Arrays.toString(array[0]));
 
-        blurImage("img/eastern_bloc.jpg");
+        blurImage("img/fuji.jpeg");
     }
 
     public static void blurImage(String filepath) {
@@ -35,7 +35,7 @@ public class BlurImage {
             // loops through pixels
             for (int y = 0; y < image.getHeight(); y++) {
                 for (int x = 0; x < image.getWidth(); x++) {
-                    int red = 0; // bit and and shifting
+                    int red = 0; // bit operation and shifting
                     int green = 0;
                     int blue = 0;
 
@@ -54,8 +54,9 @@ public class BlurImage {
                                     : 2 * (image.getHeight() - 1) - (y + row - 2);
 
                             int pixel = image.getRGB(kernelBlurx, kernelBlury);
-
-                            red += ((pixel & 0xff0000) >> 16) * convolution[col][row]; // bitwise operation and shifting
+                            
+                            // bitwise operation and shifting
+                            red += ((pixel & 0xff0000) >> 16) * convolution[col][row]; 
                             green += ((pixel & 0xff00) >> 8) * convolution[col][row];
                             blue += (pixel & 0xff) * convolution[col][row];
 
@@ -70,7 +71,7 @@ public class BlurImage {
             ImageIO.write(blurredImage, "jpg", new File("test.jpg")); // image, extension, filename
 
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(String.format("Could not read input file from \"%s\"", filepath));
 
         }
     }

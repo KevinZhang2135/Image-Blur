@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 
 public class InvertImage {
     public static void main(String[] args) throws Exception {
-        invertImage("./img/scenery.jpg");
+        invertImage("img/fuji.jpeg");
     }
 
     public static void invertImage(String filepath) {
@@ -21,7 +21,8 @@ public class InvertImage {
                 for (int x = 0; x < image.getWidth(); x++) {
                     int pixel = image.getRGB(x, y);
                     
-                    int red = Math.abs(((pixel & 0xff0000) >> 16) - 255); // bit operation and shifting
+                    // bit operation and shifting
+                    int red = Math.abs(((pixel & 0xff0000) >> 16) - 255); 
                     int green = Math.abs(((pixel & 0xff00) >> 8) - 255);
                     int blue = Math.abs((pixel & 0xff) - 255);;
                     
@@ -32,7 +33,7 @@ public class InvertImage {
             ImageIO.write(invertedImage, "jpg", new File("test.jpg")); // image, extension, filename
 
         } catch(IOException e) {
-            System.out.println(e);
+            System.out.println("Could not read input file");
 
         }
     }
