@@ -19,7 +19,7 @@ public class BlurImage {
      * @return a 2d convolution
      */
     public static double[][] createConvolution(int blurRadius, double SD) {
-        if (SD < 0) {
+        if (SD <= 0) {
             throw new IllegalArgumentException();
         }
 
