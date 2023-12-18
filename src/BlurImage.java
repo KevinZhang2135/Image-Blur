@@ -1,51 +1,53 @@
 // credit to Owen Barnes for the idea to debug
 
 import java.lang.Math;
+import java.util.Arrays;
 import java.io.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 
 public class BlurImage {
     public static void main(String[] args) throws Exception {
-        double[][] convolution = createConvolution(2, 2);
+        double[][] convolution = createConvolution(3, 2);
         blurImage("img/seaside.jpeg", convolution);
     }
+    
 
     /**
      * Generates a convolution from a normalized 2d guassian distribution
      * 
-     * @param blurRadius the length of the convolution from an origin point
+     * @param size the size of the convolution
      * @throws
      * @return a 2d convolution
      */
-    public static double[][] createConvolution(int blurRadius, double SD) {
+    public static double[][] createConvolution(int size, double SD) {
         if (SD <= 0) {
-            throw new IllegalArgumentException();
-        }
+			throw new IllegalArgumentException();
+		}
 
-        int blurSize = 2 * blurRadius + 1;
-        double[][] convolution = new double[blurSize][blurSize];
-        double sum = 0;
+		double center = (size - 1) / 2;
+		double[][] convolution = new double[size][size];
+		double sum = 0;
+		
+		// maps 3d guassian to convolution
+		for (int row = 0; row < size; row++) {
+			for (int col = 0; col < size; col++) {
+				double x = (row - center + ((size & 1) == 0 ? -0.5 : 0)) / SD;
+				double y = (col - center + ((size & 1) == 0 ? -0.5 : 0)) / SD;
 
-        // maps 3d guassian to convolution
-        for (int row = 0; row < blurSize; row++) {
-            for (int col = 0; col < blurSize; col++) {
-                double x = (row - blurRadius) / SD;
-                double y = (col - blurRadius) / SD;
+				convolution[row][col] = guassian(x, y, SD);
+				sum += convolution[row][col];
+			}
+		}
 
-                convolution[row][col] = guassian(x, y, SD);
-                sum += convolution[row][col];
-            }
-        }
+		// normalizes guassian
+		for (int row = 0; row < size; row++) {
+			for (int col = 0; col < size; col++) {
+				convolution[row][col] /= sum;
+			}
+		}
 
-        // normalizes guassian
-        for (int row = 0; row < blurSize; row++) {
-            for (int col = 0; col < blurSize; col++) {
-                convolution[row][col] /= sum;
-            }
-        }
-
-        return convolution;
+		return convolution;
     }
 
     /**
