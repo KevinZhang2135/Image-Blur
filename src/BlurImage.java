@@ -1,14 +1,13 @@
 // credit to Owen Barnes for the idea to debug
 
 import java.lang.Math;
-import java.util.Arrays;
 import java.io.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 
 public class BlurImage {
     public static void main(String[] args) throws Exception {
-        double[][] convolution = createConvolution(3, 2);
+        double[][] convolution = createConvolution(10, 2.55);
         blurImage("img/seaside.jpeg", convolution);
     }
     
